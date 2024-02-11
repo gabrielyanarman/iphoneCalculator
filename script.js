@@ -169,11 +169,15 @@ equal.addEventListener('click',() => {
                 let result = numArr.reduce((acc,val)=> acc + val)
                 numArr.length = 0;
                 view.textContent = result + ''
+                if (!view.textContent.includes(',') &&	view.textContent.length > 3 ) view.textContent = checkView(view.textContent)
+                if (view.textContent.length > 9) checkFontSize()
                 break;
             case '-':
                 let result1 = numArr.reduce((acc, val) => acc - val)
                 numArr.length = 0;
                 view.textContent = result1 + ''
+                if (!view.textContent.includes(',') &&	view.textContent.length > 3 ) view.textContent = checkView(view.textContent)
+                if (view.textContent.length > 9) checkFontSize()
                 break;
         }
     } else {
@@ -182,11 +186,15 @@ equal.addEventListener('click',() => {
                 let result = numArr.reduce((acc,val)=> acc * val)
                 numArr.length = 0;
                 view.textContent = result + ''
+                if (!view.textContent.includes(',') &&	view.textContent.length > 3 ) view.textContent = checkView(view.textContent)
+                if (view.textContent.length > 9) checkFontSize()
                 break;
             case '/':
                 let result1 = numArr.reduce((acc, val) => acc / val)
                 numArr.length = 0;
                 view.textContent = result1 + ''
+                if (!view.textContent.includes(',') &&	view.textContent.length > 3 ) view.textContent = checkView(view.textContent)
+                if (view.textContent.length > 9) checkFontSize()
                 break;
         }
     }
@@ -194,6 +202,7 @@ equal.addEventListener('click',() => {
 })
 
 function writeNum(event) {
+    if(event.target == null) return
     if (!event.target.closest('div').classList.contains('num')) return
     if (view.textContent.length >= 11) return
     if (view.textContent == 0) view.textContent = ''
@@ -203,8 +212,8 @@ function writeNum(event) {
     if (target.classList.contains('num')) target = target.querySelector('span')
     
     view.textContent += target.textContent
-    if (view.textContent.length > 9) checkFontSize()
     if (!view.textContent.includes(',') &&	view.textContent.length > 3 ) view.textContent = checkView(view.textContent)
+    if (view.textContent.length > 9) checkFontSize()
 }
 
 function checkView(view) {
@@ -215,9 +224,27 @@ function checkView(view) {
 }
 
 function checkFontSize() {
-    if(view.textContent.length == 10) {
-        view.style.fontSize = 55 +'px'
-    } else if(view.textContent.length > 10) {
+    if (view.textContent.length > 10) {
         view.style.fontSize = 50 + 'px'
+        return
     }
+
+    view.style.fontSize = 55 + 'px'
 }
+
+/* Clock */
+
+let divClock = document.querySelector('.clock')
+let spanClock = divClock.querySelector('span')
+
+setInterval(function() {
+    let date = new Date() ;
+    let hours = date.getHours();
+    let mins = date.getMinutes();
+    
+    if(hours < 10) hours = '0' + hours
+    if(mins < 10) mins = '0'+ mins
+
+    spanClock.textContent = hours + ':' + mins
+
+},1000)
